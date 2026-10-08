@@ -8,9 +8,9 @@
   <link rel="icon" href="/ball-app/test/icons/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/ball-app/test/icons/apple-touch-icon.png">
   <title>Committee</title>
-  <script type="module" crossorigin src="/ball-app/test/assets/committee-CPrvNEgB.js"></script>
-  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-B_xDuBMD.js">
-  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-DJotfuzg.css">
+  <script type="module" crossorigin src="/ball-app/test/assets/committee-BtdSAkcR.js"></script>
+  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-VVZjL8DX.js">
+  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-D75HJOWw.css">
   <link rel="manifest" href="/ball-app/test/committee/manifest.webmanifest">
   <meta name="robots" content="noindex, nofollow">
 </head>
@@ -27,7 +27,7 @@
 
   <div class="committee" x-data="committeeApp" x-cloak>
 
-    <!-- Signed out: Google sign-in (T-012), or the mock button in mock mode -->
+    <!-- Signed out: Google sign-in (T-012), or "Sign in as" a role in mock mode -->
     <template x-if="!showShell">
       <div class="min-h-full flex items-center justify-center p-4">
         <div class="card w-full max-w-sm">
@@ -50,7 +50,14 @@
               <div id="signin-slot" class="w-full flex justify-center" style="min-height:44px" x-show="!env.mock && clientId" x-effect="mountGoogle($el, clientId)"></div>
               <p class="note m-0 w-full" x-show="!env.mock && !clientId && $store.ball.status === 'ready'">Sign-in is not set up yet.</p>
               <p class="muted m-0" style="font-size:12.5px" x-show="googleError" x-text="googleError"></p>
-              <button class="btn pri" type="button" x-show="env.mock" @click="mockSignIn()">Sign in (mock)</button>
+              <div class="w-full flex flex-col gap-2" x-show="env.mock">
+                <div class="lbl">Sign in as</div>
+                <div class="mockroles">
+                  <template x-for="r in mockRoles" :key="r[0]">
+                    <button class="btn" type="button" @click="mockSignIn(r[0])" x-text="r[1]"></button>
+                  </template>
+                </div>
+              </div>
               <p class="muted m-0" style="font-size:12.5px" x-show="!env.mock">Use the Google account the chair added to the committee list.</p>
             </div>
             <div class="banner w-full" x-show="$store.ball.status === 'error'">
@@ -124,19 +131,8 @@
 
           <div class="content">
             <div class="banner" x-show="env.label !== 'live'" x-text="env.mock ? 'Mock data, for building and testing only.' : 'Test copy. Nothing here is real.'"></div>
-            <template x-for="g in groups" :key="'s' + g.group">
-              <div class="contents">
-                <template x-for="m in g.items" :key="'s' + m.id">
-                  <section x-show="route === m.id">
-                    <div class="card"><div class="empty">
-                      <div class="ic" x-html="icon(m.icon)"></div>
-                      <h3 x-text="m.title"></h3>
-                      <p class="muted" x-text="'Built in ' + m.epic + '.'"></p>
-                    </div></div>
-                  </section>
-                </template>
-              </div>
-            </template>
+            <!-- The current route's screen (src/committee/screens/), mounted by the shell -->
+            <div class="contents" x-init="mountHost($el)"></div>
           </div>
         </div>
 
