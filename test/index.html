@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1E293B">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="icon" href="/ball-app/test/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/ball-app/test/icons/apple-touch-icon.png">
+  <title>Ball</title>
+  <script type="module" crossorigin src="/ball-app/test/assets/guest-R_gWqDgW.js"></script>
+  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-BceCzK_0.js">
+  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-DJotfuzg.css">
+  <link rel="manifest" href="/ball-app/test/manifest.webmanifest">
+  <meta name="robots" content="noindex, nofollow">
+</head>
+<body>
+  <script>
+    // First paint: light or dark and the last known theme, before the app script runs.
+    (function () { try {
+      var m = localStorage.getItem('ball.mode');
+      if (m === 'light' || m === 'dark') document.documentElement.setAttribute('data-theme', m);
+      var c = localStorage.getItem('ball.test.themeCss');
+      if (c) { var s = document.createElement('style'); s.id = 'theme-vars'; s.textContent = c; document.head.appendChild(s); }
+    } catch (e) {} })();
+  </script>
+
+  <div class="guest" x-data="guestApp" x-cloak>
+    <header class="gband">
+      <div class="inner">
+        <div class="logos" x-show="$store.ball.logos.length">
+          <template x-for="l in $store.ball.logos" :key="l.slot">
+            <img :src="l.url" :alt="l.alt" :data-slot="l.slot">
+          </template>
+        </div>
+        <div class="t">
+          <div class="eb">
+            <span x-show="$store.ball.event.name" x-text="$store.ball.event.name"></span>
+            <span class="skel" x-show="!$store.ball.event.name"></span>
+          </div>
+          <h1>
+            <span class="lg:hidden" x-text="current && current.title"></span>
+            <span class="hidden lg:inline" x-text="$store.ball.event.themeName || (current && current.title)"></span>
+          </h1>
+        </div>
+        <div class="meta">
+          <span x-show="$store.ball.event.dateLong"><b x-text="$store.ball.event.dateLong"></b><template x-if="$store.ball.event.start"><span x-text="' / from ' + $store.ball.event.start"></span></template></span>
+          <span x-show="$store.ball.event.venueName"><b x-text="$store.ball.event.venueName"></b><template x-if="$store.ball.event.venueTown"><span x-text="', ' + $store.ball.event.venueTown"></span></template></span>
+        </div>
+        <button class="modebtn" type="button" @click="$store.ball.cycleMode()" :aria-label="'Colour mode: ' + $store.ball.modeLabel()" x-text="$store.ball.modeLabel()"></button>
+      </div>
+    </header>
+
+    <div class="glayout">
+      <nav class="gnav" aria-label="Sections">
+        <template x-for="s in sections" :key="s.id">
+          <div>
+            <div class="sep" x-show="s.sep"></div>
+            <a :href="'#/' + s.id" :class="{ on: route === s.id }" :aria-current="route === s.id ? 'page' : null">
+              <span x-html="icon(s.icon)"></span><span x-text="s.title"></span>
+            </a>
+          </div>
+        </template>
+      </nav>
+
+      <main class="gmain">
+        <div class="banner" x-show="$store.ball.env.label !== 'live'" x-text="$store.ball.env.mock ? 'Mock data, for building and testing only.' : 'Test copy. Nothing here is real.'"></div>
+        <div class="banner" x-show="$store.ball.status === 'error'">
+          <span>Could not load the ball details. Check your connection.</span>
+          <button class="btn sm" type="button" @click="$store.ball.refresh()">Try again</button>
+        </div>
+
+        <h2 class="gh2" x-text="current && current.title"></h2>
+
+        <!-- Home -->
+        <section x-show="route === 'home'" class="flex flex-col gap-3.5">
+          <div class="hero">
+            <span class="eb" x-text="$store.ball.event.school || ' '"></span>
+            <h2>
+              <span x-show="$store.ball.event.themeName || $store.ball.event.name" x-text="$store.ball.event.themeName || $store.ball.event.name"></span>
+              <span class="skel" x-show="!$store.ball.event.themeName && !$store.ball.event.name" style="width:8em"></span>
+            </h2>
+            <p x-show="$store.ball.event.dateLong">
+              <span x-text="$store.ball.event.dateLong"></span><template x-if="$store.ball.event.venueName"><span x-text="' at ' + $store.ball.event.venueName"></span></template>
+            </p>
+          </div>
+          <div class="phone-only card" x-show="$store.ball.daysToGo !== null && $store.ball.daysToGo >= 0">
+            <div class="card-b" style="padding-top:14px"><div class="cd"><div><b class="num" x-text="$store.ball.daysToGo"></b><small>days to go</small></div></div></div>
+          </div>
+          <div class="card"><div class="empty">
+            <div class="ic" x-html="icon('news')"></div>
+            <h3>News and key dates</h3>
+            <p class="muted">Coming soon.</p>
+          </div></div>
+        </section>
+
+        <!-- Every other section: an empty shell until its epic builds it -->
+        <template x-for="s in sections.filter((x) => x.id !== 'home')" :key="s.id">
+          <section x-show="route === s.id">
+            <div class="card"><div class="empty">
+              <div class="ic" x-html="icon(s.icon)"></div>
+              <h3 x-text="s.title"></h3>
+              <p class="muted">Coming soon.</p>
+            </div></div>
+          </section>
+        </template>
+      </main>
+
+      <aside class="gside" aria-label="Summary">
+        <div class="card" x-show="$store.ball.daysToGo !== null && $store.ball.daysToGo >= 0">
+          <div class="card-h"><h2>Countdown</h2></div>
+          <div class="card-b"><div class="cd"><div><b class="num" x-text="$store.ball.daysToGo"></b><small>days to go</small></div></div></div>
+        </div>
+        <div class="card" x-show="$store.ball.event.venueName">
+          <div class="card-h"><h2>Venue</h2></div>
+          <div class="card-b"><dl class="kv">
+            <dt>Where</dt><dd x-text="$store.ball.event.venueName"></dd>
+            <dt x-show="$store.ball.event.venueAddress">Address</dt><dd x-show="$store.ball.event.venueAddress" x-text="$store.ball.event.venueAddress"></dd>
+          </dl></div>
+        </div>
+      </aside>
+    </div>
+
+    <nav class="tabbar" aria-label="Main">
+      <template x-for="t in tabs" :key="t.id">
+        <button type="button" :class="{ on: route === t.id }" @click="go(t.id)"><span x-html="icon(t.icon, '')"></span><span x-text="t.short || t.title"></span></button>
+      </template>
+      <button type="button" :class="{ on: isMoreRoute() }" @click="moreOpen = true"><span x-html="icon('more', '')"></span>More</button>
+    </nav>
+
+    <div class="scrim" x-show="moreOpen" @click="moreOpen = false" style="z-index:65"></div>
+    <div class="sheet" x-show="moreOpen" role="dialog" aria-label="More" @keydown.escape.window="moreOpen = false">
+      <div class="grab"></div>
+      <template x-for="s in moreItems" :key="s.id">
+        <button type="button" @click="go(s.id)"><span x-html="icon(s.icon)"></span><span x-text="s.title"></span></button>
+      </template>
+      <div class="lab">Colour mode</div>
+      <div class="flex gap-2 pt-1">
+        <template x-for="m in ['system', 'light', 'dark']" :key="m">
+          <button type="button" class="btn sm" :class="{ pri: $store.ball.mode === m }" style="border-top:1px solid var(--line);padding:6px 12px;font-size:13px" @click="$store.ball.chooseMode(m)" x-text="{ system: 'Auto', light: 'Light', dark: 'Dark' }[m]"></button>
+        </template>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
