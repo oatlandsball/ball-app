@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1E293B">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="icon" href="/ball-app/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/ball-app/icons/apple-touch-icon.png">
+  <title>Committee</title>
+  <script type="module" crossorigin src="/ball-app/assets/committee-DBMfs_1j.js"></script>
+  <link rel="modulepreload" crossorigin href="/ball-app/assets/modules-BlQ1IrvY.js">
+  <link rel="stylesheet" crossorigin href="/ball-app/assets/modules-DJotfuzg.css">
+  <link rel="manifest" href="/ball-app/committee/manifest.webmanifest">
+</head>
+<body>
+  <script>
+    // First paint: light or dark and the last known theme, before the app script runs.
+    (function () { try {
+      var m = localStorage.getItem('ball.mode');
+      if (m === 'light' || m === 'dark') document.documentElement.setAttribute('data-theme', m);
+      var c = localStorage.getItem('ball.live.themeCss');
+      if (c) { var s = document.createElement('style'); s.id = 'theme-vars'; s.textContent = c; document.head.appendChild(s); }
+    } catch (e) {} })();
+  </script>
+
+  <div class="committee" x-data="committeeApp" x-cloak>
+
+    <!-- Signed out: Google sign-in (T-012), or the mock button in mock mode -->
+    <template x-if="!showShell">
+      <div class="min-h-full flex items-center justify-center p-4">
+        <div class="card w-full max-w-sm">
+          <div class="card-b flex flex-col items-center gap-4 text-center" style="padding-top:28px;padding-bottom:28px">
+            <div class="logos" x-show="$store.ball.logos.length">
+              <template x-for="l in $store.ball.logos" :key="l.slot"><img :src="l.url" :alt="l.alt" style="height:44px;max-width:96px"></template>
+            </div>
+            <div>
+              <div class="lbl">Committee</div>
+              <h1 class="font-display text-2xl font-bold m-0 mt-1">
+                <span x-show="$store.ball.event.name" x-text="$store.ball.event.name"></span>
+                <span class="skel" x-show="!$store.ball.event.name"></span>
+              </h1>
+              <p class="muted m-0 mt-1" x-show="$store.ball.event.dateLong" x-text="$store.ball.event.dateLong"></p>
+            </div>
+            <div class="banner w-full" role="alert" x-show="auth.message" x-text="auth.message"></div>
+            <p class="muted m-0" x-show="auth.status === 'checking' || auth.status === 'signingIn'" x-text="auth.status === 'checking' ? 'Checking your sign-in...' : 'Signing in...'"></p>
+            <div class="w-full flex flex-col items-center gap-2" x-show="auth.status === 'signedOut'">
+              <!-- Google's button, drawn with the client id from Settings (google_client_id) -->
+              <div id="signin-slot" class="w-full flex justify-center" style="min-height:44px" x-show="!env.mock && clientId" x-effect="mountGoogle($el, clientId)"></div>
+              <p class="note m-0 w-full" x-show="!env.mock && !clientId && $store.ball.status === 'ready'">Sign-in is not set up yet.</p>
+              <p class="muted m-0" style="font-size:12.5px" x-show="googleError" x-text="googleError"></p>
+              <button class="btn pri" type="button" x-show="env.mock" @click="mockSignIn()">Sign in (mock)</button>
+              <p class="muted m-0" style="font-size:12.5px" x-show="!env.mock">Use the Google account the chair added to the committee list.</p>
+            </div>
+            <div class="banner w-full" x-show="$store.ball.status === 'error'">
+              <span>Could not load the ball details.</span>
+              <button class="btn sm" type="button" @click="$store.ball.refresh()">Try again</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- Signed in: the shell -->
+    <template x-if="showShell">
+      <div class="h-full">
+        <div class="scrim side-scrim" x-show="sideOpen" @click="sideOpen = false"></div>
+        <aside class="side" :class="{ open: sideOpen }" aria-label="Main menu">
+          <div class="brand">
+            <div class="logos" x-show="$store.ball.logos.length">
+              <template x-for="l in $store.ball.logos.slice(0, 2)" :key="l.slot"><img :src="l.url" :alt="l.alt"></template>
+            </div>
+            <div class="logo-ph" x-show="!$store.ball.logos.length" x-text="$store.ball.event.year ? $store.ball.event.year.slice(-2) : ''"></div>
+            <div class="min-w-0">
+              <b x-text="$store.ball.event.name || ' '"></b>
+              <small>Committee</small>
+            </div>
+          </div>
+          <nav class="nav">
+            <template x-for="g in groups" :key="g.group">
+              <div class="flex flex-col gap-0.5">
+                <div class="grp" x-show="g.group" x-text="g.group"></div>
+                <template x-for="m in g.items" :key="m.id">
+                  <a :href="'#/' + m.id" :class="{ on: route === m.id }" :aria-current="route === m.id ? 'page' : null" @click="sideOpen = false">
+                    <span x-html="icon(m.icon)"></span><span class="t" x-text="m.title"></span>
+                  </a>
+                </template>
+              </div>
+            </template>
+          </nav>
+          <div class="sidefoot">
+            <div class="lab">Colour mode</div>
+            <div class="modeseg" role="group" aria-label="Colour mode">
+              <template x-for="m in ['system', 'light', 'dark']" :key="m">
+                <button type="button" :aria-pressed="$store.ball.mode === m" @click="$store.ball.chooseMode(m)" x-text="{ system: 'Auto', light: 'Light', dark: 'Dark' }[m]"></button>
+              </template>
+            </div>
+            <div class="flex items-center gap-2.5" style="font-size:13px">
+              <div class="logo-ph" style="width:28px;height:28px;border-radius:999px;font:700 12px var(--sans)" x-text="(member.firstName || '?').slice(0, 1).toUpperCase()"></div>
+              <div class="min-w-0 flex-1">
+                <div style="color:#fff;font-weight:600" class="truncate" x-text="member.firstName"></div>
+                <div style="font-size:11.5px;color:var(--side-dim)" class="truncate" x-text="member.roleLabel || member.role"></div>
+              </div>
+              <button class="btn sm" type="button" @click="signOut()" style="background:transparent;color:var(--side-fg);border-color:rgba(255,255,255,.12)">Sign out</button>
+            </div>
+          </div>
+        </aside>
+
+        <div class="main">
+          <header class="top">
+            <button class="menu-btn" type="button" aria-label="Open menu" @click="sideOpen = true" x-html="icon('menu')"></button>
+            <div class="grow">
+              <h1 x-text="current && current.title"></h1>
+              <div class="sub">
+                <span x-text="[$store.ball.event.name, $store.ball.event.dateLong, $store.ball.event.venueName].filter(Boolean).join(' / ')"></span>
+              </div>
+            </div>
+            <button class="who-btn" type="button" @click="sideOpen = true" :aria-label="'Signed in as ' + (member.firstName || '') + ', ' + (member.roleLabel || member.role || '')">
+              <span class="who-txt"><b class="truncate" x-text="member.firstName"></b><small class="truncate" x-text="member.roleLabel || member.role"></small></span>
+              <span class="logo-ph who-av" x-text="(member.firstName || '?').slice(0, 1).toUpperCase()"></span>
+            </button>
+          </header>
+
+          <div class="content">
+            <div class="banner" x-show="env.label !== 'live'" x-text="env.mock ? 'Mock data, for building and testing only.' : 'Test copy. Nothing here is real.'"></div>
+            <template x-for="g in groups" :key="'s' + g.group">
+              <div class="contents">
+                <template x-for="m in g.items" :key="'s' + m.id">
+                  <section x-show="route === m.id">
+                    <div class="card"><div class="empty">
+                      <div class="ic" x-html="icon(m.icon)"></div>
+                      <h3 x-text="m.title"></h3>
+                      <p class="muted" x-text="'Built in ' + m.epic + '.'"></p>
+                    </div></div>
+                  </section>
+                </template>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <nav class="tabbar" aria-label="Main">
+          <template x-for="t in tabs" :key="t.id">
+            <button type="button" :class="{ on: route === t.id }" @click="go(t.id)"><span x-html="icon(t.icon, '')"></span><span x-text="t.short || t.title"></span></button>
+          </template>
+          <button type="button" :class="{ on: isMoreRoute() }" @click="moreOpen = true"><span x-html="icon('more', '')"></span>More</button>
+        </nav>
+
+        <div class="scrim" x-show="moreOpen" @click="moreOpen = false" style="z-index:65"></div>
+        <div class="sheet" x-show="moreOpen" role="dialog" aria-label="More" @keydown.escape.window="moreOpen = false">
+          <div class="grab"></div>
+          <template x-for="m in moreItems" :key="m.id">
+            <button type="button" @click="go(m.id)"><span x-html="icon(m.icon)"></span><span x-text="m.title"></span></button>
+          </template>
+        </div>
+      </div>
+    </template>
+  </div>
+</body>
+</html>
