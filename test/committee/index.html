@@ -8,18 +8,16 @@
   <link rel="icon" href="/ball-app/test/icons/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/ball-app/test/icons/apple-touch-icon.png">
   <title>Committee</title>
-  <script type="module" crossorigin src="/ball-app/test/assets/committee-DtB9a7uN.js"></script>
-  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-8E0a_Zp8.js">
-  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-DZ1cThFO.css">
+  <script type="module" crossorigin src="/ball-app/test/assets/committee-XK7zHP_U.js"></script>
+  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-D_zaWnxG.js">
+  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-BcJA9x0c.css">
   <link rel="manifest" href="/ball-app/test/committee/manifest.webmanifest">
   <meta name="robots" content="noindex, nofollow">
 </head>
 <body>
   <script>
-    // First paint: light or dark and the last known theme, before the app script runs.
+    // First paint: the last known theme, before the app script runs.
     (function () { try {
-      var m = localStorage.getItem('ball.mode');
-      if (m === 'light' || m === 'dark') document.documentElement.setAttribute('data-theme', m);
       var c = localStorage.getItem('ball.test.themeCss');
       if (c) { var s = document.createElement('style'); s.id = 'theme-vars'; s.textContent = c; document.head.appendChild(s); }
     } catch (e) {} })();
@@ -97,14 +95,8 @@
             </template>
           </nav>
           <div class="sidefoot">
-            <div class="lab">Colour mode</div>
-            <div class="modeseg" role="group" aria-label="Colour mode">
-              <template x-for="m in ['system', 'light', 'dark']" :key="m">
-                <button type="button" :aria-pressed="$store.ball.mode === m" @click="$store.ball.chooseMode(m)" x-text="{ system: 'Auto', light: 'Light', dark: 'Dark' }[m]"></button>
-              </template>
-            </div>
             <div class="flex items-center gap-2.5" style="font-size:13px">
-              <div class="logo-ph" style="width:28px;height:28px;border-radius:999px;font:700 12px var(--sans)" x-text="(member.firstName || '?').slice(0, 1).toUpperCase()"></div>
+              <div class="logo-ph" style="width:28px;height:28px;border-radius:6px;font:700 12px var(--sans)" x-text="(member.firstName || '?').slice(0, 1).toUpperCase()"></div>
               <div class="min-w-0 flex-1">
                 <div style="color:#fff;font-weight:600" class="truncate" x-text="member.firstName"></div>
                 <div style="font-size:11.5px;color:var(--side-dim)" class="truncate" x-text="member.roleLabel || member.role"></div>
@@ -148,14 +140,8 @@
           <template x-for="m in moreItems" :key="m.id">
             <button type="button" @click="go(m.id)"><span x-html="icon(m.icon)"></span><span x-text="m.title"></span></button>
           </template>
-          <!-- On phones the bottom bar is the only menu (FB-009): what the left menu's foot holds is here too -->
+          <!-- On phones the bottom bar is the only menu (FB-009): who is signed in and Sign out are here too -->
           <div class="sheet-foot">
-            <div class="lab">Colour mode</div>
-            <div class="modeseg" role="group" aria-label="Colour mode">
-              <template x-for="m in ['system', 'light', 'dark']" :key="m">
-                <button type="button" :aria-pressed="$store.ball.mode === m" @click="$store.ball.chooseMode(m)" x-text="{ system: 'Auto', light: 'Light', dark: 'Dark' }[m]"></button>
-              </template>
-            </div>
             <div class="flex items-center gap-2.5" style="font-size:13px">
               <div class="logo-ph who-av" x-text="(member.firstName || '?').slice(0, 1).toUpperCase()"></div>
               <div class="min-w-0 flex-1">

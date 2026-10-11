@@ -8,18 +8,16 @@
   <link rel="icon" href="/ball-app/test/icons/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/ball-app/test/icons/apple-touch-icon.png">
   <title>Ball</title>
-  <script type="module" crossorigin src="/ball-app/test/assets/guest-EJEjJW2j.js"></script>
-  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-8E0a_Zp8.js">
-  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-DZ1cThFO.css">
+  <script type="module" crossorigin src="/ball-app/test/assets/guest-CYqaMyom.js"></script>
+  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-D_zaWnxG.js">
+  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-BcJA9x0c.css">
   <link rel="manifest" href="/ball-app/test/manifest.webmanifest">
   <meta name="robots" content="noindex, nofollow">
 </head>
 <body>
   <script>
-    // First paint: light or dark and the last known theme, before the app script runs.
+    // First paint: the last known theme, before the app script runs.
     (function () { try {
-      var m = localStorage.getItem('ball.mode');
-      if (m === 'light' || m === 'dark') document.documentElement.setAttribute('data-theme', m);
       var c = localStorage.getItem('ball.test.themeCss');
       if (c) { var s = document.createElement('style'); s.id = 'theme-vars'; s.textContent = c; document.head.appendChild(s); }
     } catch (e) {} })();
@@ -47,7 +45,6 @@
           <span x-show="$store.ball.event.dateLong"><b x-text="$store.ball.event.dateLong"></b><template x-if="$store.ball.event.start"><span x-text="' / from ' + $store.ball.event.start"></span></template></span>
           <span x-show="$store.ball.event.venueName"><b x-text="$store.ball.event.venueName"></b><template x-if="$store.ball.event.venueTown"><span x-text="', ' + $store.ball.event.venueTown"></span></template></span>
         </div>
-        <button class="modebtn" type="button" @click="$store.ball.cycleMode()" :aria-label="'Colour mode: ' + $store.ball.modeLabel()" x-text="$store.ball.modeLabel()"></button>
       </div>
     </header>
 
@@ -134,12 +131,6 @@
       <template x-for="s in moreItems" :key="s.id">
         <button type="button" @click="go(s.id)"><span x-html="icon(s.icon)"></span><span x-text="s.title"></span></button>
       </template>
-      <div class="lab">Colour mode</div>
-      <div class="flex gap-2 pt-1">
-        <template x-for="m in ['system', 'light', 'dark']" :key="m">
-          <button type="button" class="btn sm" :class="{ pri: $store.ball.mode === m }" style="border-top:1px solid var(--line);padding:6px 12px;font-size:13px" @click="$store.ball.chooseMode(m)" x-text="{ system: 'Auto', light: 'Light', dark: 'Dark' }[m]"></button>
-        </template>
-      </div>
     </div>
   </div>
 </body>
