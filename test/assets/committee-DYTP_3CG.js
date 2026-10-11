@@ -50,7 +50,7 @@ import{_ as e,a as t,c as n,d as r,f as i,g as a,h as o,l as s,m as c,n as l,o a
   </div>`,Rt=(e=``)=>`
     <div class="rhead">
       <template x-for="c in listCols" :key="c.name">
-        <button type="button" :class="{ num: isNumber(c), sorted: sortCol === c.name }" :disabled="c.computed" :title="c.computed ? label(c) : 'Sort by ' + label(c)" @click="sortBy(c.name)" :aria-sort="sortCol === c.name ? (sortDir === 'asc' ? 'ascending' : 'descending') : null">
+        <button type="button" :class="{ num: isNumber(c), sorted: sortCol === c.name }" :disabled="Boolean(c.computed)" :title="c.computed ? label(c) : 'Sort by ' + label(c)" @click="sortBy(c.name)" :aria-sort="sortCol === c.name ? (sortDir === 'asc' ? 'ascending' : 'descending') : null">
           <span x-text="label(c)"></span><span class="rarrow" x-show="!c.computed" x-text="sortCol === c.name ? (sortDir === 'asc' ? '↑' : '↓') : '↕'"></span>
         </button>
       </template>${e}
@@ -213,7 +213,7 @@ import{_ as e,a as t,c as n,d as r,f as i,g as a,h as o,l as s,m as c,n as l,o a
     <h3 class="lbl m-0">Benefits</h3>
     <template x-for="b in benefits" :key="b.id">
       <label class="fcheck">
-        <input type="checkbox" :checked="b.done" :disabled="!canTick || busy" @change="tick(b, $event.target)">
+        <input type="checkbox" :checked="Boolean(b.done)" :disabled="!canTick || busy" @change="tick(b, $event.target)">
         <span><span x-text="benefitLabel(b)"></span> <small class="muted" x-text="doneText(b)"></small></span>
       </label>
     </template>
@@ -275,8 +275,8 @@ import{_ as e,a as t,c as n,d as r,f as i,g as a,h as o,l as s,m as c,n as l,o a
       </div>
     </template>
     <div class="flex gap-2">
-      <button class="btn pri sm" type="submit" :disabled="person.saving" x-text="person.saving ? 'Saving...' : 'Save person'"></button>
-      <button class="btn sm" type="button" :disabled="person.saving" @click="cancelPerson()">Cancel</button>
+      <button class="btn pri sm" type="submit" :disabled="Boolean(person.saving)" x-text="person.saving ? 'Saving...' : 'Save person'"></button>
+      <button class="btn sm" type="button" :disabled="Boolean(person.saving)" @click="cancelPerson()">Cancel</button>
     </div>
   </form>
   </section>`}),V=()=>T.rows(`SponsorYear`),bn={tab:`Tiers`,load:[`Tiers`,`SponsorYear`,`system/Contacts`,`Members`],list:[`name`,`price_pence`,`available`,`_taken`,`_left`,`sort_order`],form:[`name`,`price_pence`,`available`,`benefits`,`benefits_text`,`ad_size`,`sort_order`,`active`],filters:[`active`],sort:`sort_order`,noun:`tier`,defaults:{active:!0},empty:`No tiers yet. The chair or treasurer adds them.`},xn={price_pence:`Price`,available:`How many`,benefits_text:`Benefits as written`,sort_order:`Order`,active:`Offered`};function Sn(){let e=N(bn);return z(e,xn),cn(e,{_taken:{label:`Taken`,type:`int`,text:e=>String(Wt(e.id,V()))},_left:{label:`Left`,type:`int`,text:e=>Gt(e,Wt(e.id,V()))}}),L(e,`create`,function(e){this.cfg.defaults.sort_order=tn(T.rows(`Tiers`)),e.call(this)}),R(e,{get onTier(){if(!this.record)return[];let e=e=>+!Vt.includes(e.status);return V().filter(e=>e.tier_id===this.record.id).map(t=>({id:t.id,name:T.label(`system/Contacts`,t.contact_id),status:T.listLabel(`sponsor_status`,t.status),held:e(t)})).sort((e,t)=>e.held-t.held||e.name.localeCompare(t.name,`en-GB`))},get placesText(){let e=this.record;if(!e)return``;let t=Wt(e.id,V());return e.available==null?`${t} taken, no limit`:`${t} of ${e.available} taken. ${Gt(e,t)}.`},showSponsor(e){this.panel.open=!1,this.openSponsor(e)}}),e}var Cn=P({panelViewHtml:`
@@ -564,7 +564,7 @@ import{_ as e,a as t,c as n,d as r,f as i,g as a,h as o,l as s,m as c,n as l,o a
       <form class="pform" id="filesUpload" novalidate x-show="formStatus === 'ready' && !up.done" @submit.prevent="send()">
         <div class="field">
           <label class="flab" for="fu-area">Area</label>
-          <select class="inp" id="fu-area" x-model="up.area" @change="pickArea()" :disabled="up.busy">
+          <select class="inp" id="fu-area" x-model="up.area" @change="pickArea()" :disabled="Boolean(up.busy)">
             <option value="">Choose...</option>
             <template x-for="a in upAreas" :key="a.key"><option :value="a.key" x-text="a.label" :selected="up.area === a.key"></option></template>
           </select>
@@ -573,31 +573,31 @@ import{_ as e,a as t,c as n,d as r,f as i,g as a,h as o,l as s,m as c,n as l,o a
           <div class="flex flex-col gap-4">
             <div class="field">
               <label class="flab" for="fu-title">Title</label>
-              <input class="inp" id="fu-title" x-model="up.title" maxlength="200" :disabled="up.busy" placeholder="For example: Hotel floor plan">
+              <input class="inp" id="fu-title" x-model="up.title" maxlength="200" :disabled="Boolean(up.busy)" placeholder="For example: Hotel floor plan">
             </div>
             <div class="field">
               <label class="flab" for="fu-comment">Comment</label>
-              <textarea class="inp" id="fu-comment" x-model="up.comment" maxlength="2000" :disabled="up.busy"></textarea>
+              <textarea class="inp" id="fu-comment" x-model="up.comment" maxlength="2000" :disabled="Boolean(up.busy)"></textarea>
             </div>
             <div class="seg self-start" role="group" aria-label="File or link">
-              <button type="button" :aria-pressed="up.how === 'file'" @click="up.how = 'file'" :disabled="up.busy">Upload a file</button>
-              <button type="button" :aria-pressed="up.how === 'link'" @click="up.how = 'link'" :disabled="up.busy">Paste a link</button>
+              <button type="button" :aria-pressed="up.how === 'file'" @click="up.how = 'file'" :disabled="Boolean(up.busy)">Upload a file</button>
+              <button type="button" :aria-pressed="up.how === 'link'" @click="up.how = 'link'" :disabled="Boolean(up.busy)">Paste a link</button>
             </div>
             <div class="field" x-show="up.how === 'file'">
               <label class="flab" for="fu-ofile">File</label>
-              <input class="inp" id="fu-ofile" type="file" :accept="otherAccept" @change="picked($event)" :disabled="up.busy">
+              <input class="inp" id="fu-ofile" type="file" :accept="otherAccept" @change="picked($event)" :disabled="Boolean(up.busy)">
               <p class="fhelp" x-text="otherHint"></p>
             </div>
             <div class="field" x-show="up.how === 'link'">
               <label class="flab" for="fu-link">Link</label>
-              <input class="inp" id="fu-link" type="url" x-model="up.link" :disabled="up.busy" placeholder="https://">
+              <input class="inp" id="fu-link" type="url" x-model="up.link" :disabled="Boolean(up.busy)" placeholder="https://">
               <p class="fhelp">A Google Drive, Docs or Sheets link, or any web page.</p>
             </div>
           </div>
         </template>
         <div class="field" x-show="upArea">
           <label class="flab" for="fu-record">Which one</label>
-          <select class="inp" id="fu-record" x-model="up.recordId" @change="up.replace = false" :disabled="up.busy">
+          <select class="inp" id="fu-record" x-model="up.recordId" @change="up.replace = false" :disabled="Boolean(up.busy)">
             <option value="">Choose...</option>
             <template x-for="r in upRecords" :key="r.value"><option :value="r.value" x-text="r.label" :selected="up.recordId === r.value"></option></template>
           </select>
@@ -605,7 +605,7 @@ import{_ as e,a as t,c as n,d as r,f as i,g as a,h as o,l as s,m as c,n as l,o a
         </div>
         <div class="field" x-show="upArea && upFields.length > 1">
           <label class="flab" for="fu-field">File field</label>
-          <select class="inp" id="fu-field" x-model="up.column" @change="up.replace = false" :disabled="up.busy">
+          <select class="inp" id="fu-field" x-model="up.column" @change="up.replace = false" :disabled="Boolean(up.busy)">
             <option value="">Choose...</option>
             <template x-for="f in upFields" :key="f.name"><option :value="f.name" x-text="f.label" :selected="up.column === f.name"></option></template>
           </select>
@@ -614,7 +614,7 @@ import{_ as e,a as t,c as n,d as r,f as i,g as a,h as o,l as s,m as c,n as l,o a
           <template x-if="upCurrent">
             <div class="flex flex-col gap-1">
               <label class="flex items-start gap-2 text-[13.5px]">
-                <input type="checkbox" class="mt-0.5" x-model="up.replace" :disabled="up.busy">
+                <input type="checkbox" class="mt-0.5" x-model="up.replace" :disabled="Boolean(up.busy)">
                 <span>Replace the current file</span>
               </label>
               <p class="fhelp" x-text="up.replace ? 'The current file goes to the Drive Bin, where it can be restored for 30 days.' : 'Not ticked: the new file is added next to the current one.'"></p>
@@ -624,7 +624,7 @@ import{_ as e,a as t,c as n,d as r,f as i,g as a,h as o,l as s,m as c,n as l,o a
         </div>
         <div class="field" x-show="upField">
           <label class="flab" for="fu-file">File</label>
-          <input class="inp" id="fu-file" type="file" x-ref="upFile" :accept="upAccept" @change="picked($event)" :disabled="up.busy">
+          <input class="inp" id="fu-file" type="file" x-ref="upFile" :accept="upAccept" @change="picked($event)" :disabled="Boolean(up.busy)">
           <p class="fhelp" x-text="upHint"></p>
         </div>
         <p class="fhelp m-0" role="status" x-show="up.stage" x-text="up.stage"></p>
@@ -635,7 +635,7 @@ import{_ as e,a as t,c as n,d as r,f as i,g as a,h as o,l as s,m as c,n as l,o a
       <span class="grow"></span>
       <template x-if="!up.done">
         <div class="flex gap-2">
-          <button class="btn" type="button" :disabled="up.busy" @click="closeUpload()">Cancel</button>
+          <button class="btn" type="button" :disabled="Boolean(up.busy)" @click="closeUpload()">Cancel</button>
           <button class="btn pri" type="submit" form="filesUpload" :disabled="!canSend" x-text="up.busy ? (up.stage || 'Saving...') : (upOther && up.how === 'link' ? 'Add' : 'Upload')"></button>
         </div>
       </template>
