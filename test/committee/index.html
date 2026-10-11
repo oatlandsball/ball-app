@@ -8,9 +8,9 @@
   <link rel="icon" href="/ball-app/test/icons/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/ball-app/test/icons/apple-touch-icon.png">
   <title>Committee</title>
-  <script type="module" crossorigin src="/ball-app/test/assets/committee-DVZ305-R.js"></script>
-  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-Ckg1W9Sp.js">
-  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-D3Sy5Mir.css">
+  <script type="module" crossorigin src="/ball-app/test/assets/committee-Dc5O-Vdi.js"></script>
+  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-BVpTvTl-.js">
+  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-CIGVftAg.css">
   <link rel="manifest" href="/ball-app/test/committee/manifest.webmanifest">
   <meta name="robots" content="noindex, nofollow">
 </head>
@@ -125,6 +125,16 @@
             <!-- The current route's screen (src/committee/screens/), mounted by the shell -->
             <div class="contents" x-init="mountHost($el)"></div>
           </div>
+        </div>
+
+        <!-- The message after a change, with Undo (FB-022, ui/toast.js) -->
+        <div class="toast" role="status" aria-live="polite" x-show="$store.toast.shown" x-cloak
+          @mouseenter="$store.toast.hold()" @mouseleave="$store.toast.release()"
+          @focusin="$store.toast.hold()" @focusout="$store.toast.release()"
+          @touchstart.passive="$store.toast.hold()" @touchend.passive="$store.toast.release()">
+          <span class="tmsg" x-text="$store.toast.text"></span>
+          <button type="button" class="tundo" x-show="$store.toast.canUndo" :disabled="$store.toast.busy" @click="$store.toast.undo()" x-text="$store.toast.busy ? 'Undoing...' : 'Undo'"></button>
+          <button type="button" aria-label="Close the message" @click="$store.toast.dismiss()">✕</button>
         </div>
 
         <nav class="tabbar" aria-label="Main">
