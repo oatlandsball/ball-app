@@ -1,10 +1,10 @@
 {
   "display": "standalone",
   "background_color": "#F1F4F8",
-  "theme_color": "#1E293B",
+  "theme_color": "#18181B",
   "lang": "en-GB",
   "id": "./",
-  "name": "Ball committee",
+  "name": "Oatlands School Ball 2027 committee",
   "short_name": "Committee",
   "start_url": "./",
   "scope": "./",
