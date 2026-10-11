@@ -8,9 +8,9 @@
   <link rel="icon" href="/ball-app/test/icons/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/ball-app/test/icons/apple-touch-icon.png">
   <title>Committee</title>
-  <script type="module" crossorigin src="/ball-app/test/assets/committee-DMMZYAN1.js"></script>
-  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-CyBSRW-n.js">
-  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-i6FJx-FD.css">
+  <script type="module" crossorigin src="/ball-app/test/assets/committee-DoGcTkip.js"></script>
+  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-C1XXgSRF.js">
+  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-F2NC8MYI.css">
   <link rel="manifest" href="/ball-app/test/committee/manifest.webmanifest">
   <meta name="robots" content="noindex, nofollow">
 </head>
@@ -116,14 +116,13 @@
 
         <div class="main">
           <header class="top">
-            <button class="menu-btn" type="button" aria-label="Open menu" @click="sideOpen = true" x-html="icon('menu')"></button>
             <div class="grow">
               <h1 x-text="current && current.title"></h1>
               <div class="sub">
                 <span x-text="[$store.ball.event.name, $store.ball.event.dateLong, $store.ball.event.venueName].filter(Boolean).join(' / ')"></span>
               </div>
             </div>
-            <button class="who-btn" type="button" @click="sideOpen = true" :aria-label="'Signed in as ' + (member.firstName || '') + ', ' + (member.roleLabel || member.role || '')">
+            <button class="who-btn" type="button" @click="moreOpen = true" :aria-label="'Signed in as ' + (member.firstName || '') + ', ' + (member.roleLabel || member.role || '')">
               <span class="who-txt"><b class="truncate" x-text="member.firstName"></b><small class="truncate" x-text="member.roleLabel || member.role"></small></span>
               <span class="logo-ph who-av" x-text="(member.firstName || '?').slice(0, 1).toUpperCase()"></span>
             </button>
@@ -149,6 +148,23 @@
           <template x-for="m in moreItems" :key="m.id">
             <button type="button" @click="go(m.id)"><span x-html="icon(m.icon)"></span><span x-text="m.title"></span></button>
           </template>
+          <!-- On phones the bottom bar is the only menu (FB-009): what the left menu's foot holds is here too -->
+          <div class="sheet-foot">
+            <div class="lab">Colour mode</div>
+            <div class="modeseg" role="group" aria-label="Colour mode">
+              <template x-for="m in ['system', 'light', 'dark']" :key="m">
+                <button type="button" :aria-pressed="$store.ball.mode === m" @click="$store.ball.chooseMode(m)" x-text="{ system: 'Auto', light: 'Light', dark: 'Dark' }[m]"></button>
+              </template>
+            </div>
+            <div class="flex items-center gap-2.5" style="font-size:13px">
+              <div class="logo-ph who-av" x-text="(member.firstName || '?').slice(0, 1).toUpperCase()"></div>
+              <div class="min-w-0 flex-1">
+                <div class="truncate" style="font-weight:600" x-text="member.firstName"></div>
+                <div class="truncate muted" style="font-size:11.5px" x-text="member.roleLabel || member.role"></div>
+              </div>
+              <button class="btn sm" type="button" @click="moreOpen = false; signOut()">Sign out</button>
+            </div>
+          </div>
         </div>
       </div>
     </template>
