@@ -8,9 +8,9 @@
   <link rel="icon" href="/ball-app/test/icons/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/ball-app/test/icons/apple-touch-icon.png">
   <title>Committee</title>
-  <script type="module" crossorigin src="/ball-app/test/assets/committee-BelWj_LG.js"></script>
-  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-9jOzS9F5.js">
-  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-BkQsqvK3.css">
+  <script type="module" crossorigin src="/ball-app/test/assets/committee-DOjbT7oc.js"></script>
+  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-C-73P83P.js">
+  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-BcpGOItz.css">
   <link rel="manifest" href="/ball-app/test/committee/manifest.webmanifest">
   <meta name="robots" content="noindex, nofollow">
 </head>
@@ -71,7 +71,7 @@
     <template x-if="showShell">
       <div class="h-full">
         <div class="scrim side-scrim" x-show="sideOpen" @click="sideOpen = false"></div>
-        <aside class="side" :class="{ open: sideOpen }" aria-label="Main menu">
+        <aside class="side" :class="{ open: sideOpen }" aria-label="Main menu" @mouseenter="retryYears()" @focusin="retryYears()">
           <div class="brand">
             <div class="logos" x-show="$store.ball.logos.length">
               <template x-for="l in $store.ball.logos.slice(0, 2)" :key="l.slot"><img :src="l.url" :alt="l.alt"></template>
