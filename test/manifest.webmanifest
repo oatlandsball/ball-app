@@ -1,11 +1,11 @@
 {
   "display": "standalone",
   "background_color": "#F1F4F8",
-  "theme_color": "#18181B",
+  "theme_color": "#1E293B",
   "lang": "en-GB",
   "id": "./",
-  "name": "Oatlands School Ball 2027",
-  "short_name": "Oatlands",
+  "name": "Ball",
+  "short_name": "Ball",
   "start_url": "./",
   "scope": "./",
   "icons": [

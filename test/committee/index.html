@@ -8,9 +8,9 @@
   <link rel="icon" href="/ball-app/test/icons/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/ball-app/test/icons/apple-touch-icon.png">
   <title>Committee</title>
-  <script type="module" crossorigin src="/ball-app/test/assets/committee-CgQPxsJS.js"></script>
-  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-B2Ms3F2y.js">
-  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-CfBqitTQ.css">
+  <script type="module" crossorigin src="/ball-app/test/assets/committee-CHT8I45L.js"></script>
+  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-DeVlrREV.js">
+  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-BkQsqvK3.css">
   <link rel="manifest" href="/ball-app/test/committee/manifest.webmanifest">
   <meta name="robots" content="noindex, nofollow">
 </head>
@@ -76,9 +76,9 @@
             <div class="logos" x-show="$store.ball.logos.length">
               <template x-for="l in $store.ball.logos.slice(0, 2)" :key="l.slot"><img :src="l.url" :alt="l.alt"></template>
             </div>
-            <div class="logo-ph" x-show="!$store.ball.logos.length" x-text="$store.ball.event.year ? $store.ball.event.year.slice(-2) : ''"></div>
+            <div class="logo-ph" x-show="!$store.ball.logos.length" x-text="eventInfo.year ? eventInfo.year.slice(-2) : ''"></div>
             <div class="min-w-0">
-              <b x-text="$store.ball.event.name || ' '"></b>
+              <b x-text="eventInfo.name || ' '"></b>
               <small>Committee</small>
             </div>
           </div>
@@ -95,6 +95,15 @@
             </template>
           </nav>
           <div class="sidefoot">
+            <!-- E2 (T-093): the ball year, at the bottom of the side menu on a computer -->
+            <div class="yside" x-show="$store.years.canPick">
+              <label class="lab" for="ypick-side">Ball year</label>
+              <select id="ypick-side" class="ypick" @change="pickYear($event.target.value)">
+                <template x-for="o in $store.years.options" :key="o.value">
+                  <option :value="String(o.value)" :selected="o.value === $store.years.shown" x-text="o.label"></option>
+                </template>
+              </select>
+            </div>
             <div class="flex items-center gap-2.5" style="font-size:13px">
               <div class="logo-ph" style="width:28px;height:28px;border-radius:6px;font:700 12px var(--sans)" x-text="(member.firstName || '?').slice(0, 1).toUpperCase()"></div>
               <div class="min-w-0 flex-1">
@@ -109,9 +118,9 @@
         <div class="main">
           <header class="top">
             <div class="grow">
-              <h1 x-text="current && current.title"></h1>
+              <h1><span x-text="current && current.title"></span><span class="ytag" x-show="titleTag" x-text="titleTag"></span></h1>
               <div class="sub">
-                <span x-text="[$store.ball.event.name, $store.ball.event.dateLong, $store.ball.event.venueName].filter(Boolean).join(' / ')"></span>
+                <span x-text="eventLine"></span>
               </div>
             </div>
             <button class="who-btn" type="button" @click="moreOpen = true" :aria-label="'Signed in as ' + (member.firstName || '') + ', ' + memberKind">
@@ -119,6 +128,12 @@
               <span class="logo-ph who-av" x-text="(member.firstName || '?').slice(0, 1).toUpperCase()"></span>
             </button>
           </header>
+          <!-- E2 (T-093): a past year is read only; the band says so and goes back -->
+          <div class="pastband" role="status" x-show="$store.years.past">
+            <span x-html="icon('lock')"></span>
+            <span class="min-w-0" x-text="$store.years.bandText"></span>
+            <button type="button" class="plink" @click="backToCurrent()" x-text="$store.years.backText"></button>
+          </div>
 
           <div class="content">
             <div class="banner envb" x-show="env.label !== 'live'"><span x-text="env.mock ? 'Mock data, for building and testing only.' : 'Test copy. Nothing here is real.'"></span><span class="stamp" x-show="env.build" x-text="env.build ? 'Test: ' + env.build.branch + ' ' + env.build.sha : ''"></span></div>
@@ -150,6 +165,15 @@
           <template x-for="m in moreItems" :key="m.id">
             <button type="button" @click="go(m.id)"><span x-html="icon(m.icon)"></span><span x-text="m.title"></span></button>
           </template>
+          <!-- E2 (T-093): the ball year, in the More sheet on a phone -->
+          <label class="ysheet" x-show="$store.years.canPick">
+            <span x-html="icon('calendar')"></span><span class="grow">Ball year</span>
+            <select class="ypick" @change="pickYear($event.target.value)">
+              <template x-for="o in $store.years.options" :key="o.value">
+                <option :value="String(o.value)" :selected="o.value === $store.years.shown" x-text="o.label"></option>
+              </template>
+            </select>
+          </label>
           <!-- On phones the bottom bar is the only menu (FB-009): who is signed in and Sign out are here too -->
           <div class="sheet-foot">
             <div class="flex items-center gap-2.5" style="font-size:13px">
