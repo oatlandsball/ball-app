@@ -1,9 +1,9 @@
 // Generated at build time by build/pwa.js. Caches the app shell only: never API replies,
 // never other websites, never anything but GET requests on this site.
-const VERSION = "20261016183641";
+const VERSION = "20261016191148";
 const CACHE = 'ball-shell-' + VERSION;
 const SCOPE = self.registration.scope;
-const SHELL = ["./","assets/committee-DOjbT7oc.js","assets/guest-CdvjaAZ9.js","assets/modules-BcpGOItz.css","assets/modules-C-73P83P.js","committee/","committee/manifest.webmanifest","icons/apple-touch-icon.png","icons/favicon.svg","icons/icon-192.png","icons/icon-512.png","icons/maskable-512.png","manifest.webmanifest"].map((f) => new URL(f, SCOPE).href);
+const SHELL = ["./","assets/committee-B_KO4rNj.js","assets/guest-DhGtwC9_.js","assets/modules-BcpGOItz.css","assets/modules-DDpehR4A.js","committee/","committee/manifest.webmanifest","icons/apple-touch-icon.png","icons/favicon.svg","icons/icon-192.png","icons/icon-512.png","icons/maskable-512.png","manifest.webmanifest"].map((f) => new URL(f, SCOPE).href);
 const EXCLUDE = [].map((p) => new URL(p, SCOPE).href);
 
 self.addEventListener('install', (e) => {
