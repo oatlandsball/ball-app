@@ -8,9 +8,9 @@
   <link rel="icon" href="/ball-app/test/icons/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/ball-app/test/icons/apple-touch-icon.png">
   <title>Committee</title>
-  <script type="module" crossorigin src="/ball-app/test/assets/committee-BQtL1x8D.js"></script>
-  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-Cz8Ti2SR.js">
-  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-B0lrt2i8.css">
+  <script type="module" crossorigin src="/ball-app/test/assets/committee-CgQPxsJS.js"></script>
+  <link rel="modulepreload" crossorigin href="/ball-app/test/assets/modules-B2Ms3F2y.js">
+  <link rel="stylesheet" crossorigin href="/ball-app/test/assets/modules-CfBqitTQ.css">
   <link rel="manifest" href="/ball-app/test/committee/manifest.webmanifest">
   <meta name="robots" content="noindex, nofollow">
 </head>
@@ -121,7 +121,7 @@
           </header>
 
           <div class="content">
-            <div class="banner" x-show="env.label !== 'live'" x-text="env.mock ? 'Mock data, for building and testing only.' : 'Test copy. Nothing here is real.'"></div>
+            <div class="banner envb" x-show="env.label !== 'live'"><span x-text="env.mock ? 'Mock data, for building and testing only.' : 'Test copy. Nothing here is real.'"></span><span class="stamp" x-show="env.build" x-text="env.build ? 'Test: ' + env.build.branch + ' ' + env.build.sha : ''"></span></div>
             <!-- The current route's screen (src/committee/screens/), mounted by the shell -->
             <div class="contents" x-init="mountHost($el)"></div>
           </div>
